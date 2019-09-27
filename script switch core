@@ -1,0 +1,31 @@
+enable
+clock set 14:45:35 27 sep 2019
+configure terminal
+hostname SW-CORE021
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS!!!"
+enable secret SenhadaEnable
+line console 0
+password SenhadaConsole
+login
+exit
+ip domain-name grupo1.local
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+password SenhadaVTY
+login local
+transport input ssh
+exec-timeout 9
+exit
+username jadisson privilege 15 secret alencar1
+service password-encryption
+vlan 100
+name VLAN100
+exit
+interface g1/1
+switchport mode access
+switchport access vlan 100
+no shutdown
+interface vlan 100
+ip address 172.16.1.254 255.255.255.240
+description VLAN100
+do wr
